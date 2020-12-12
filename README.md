@@ -1,5 +1,4 @@
-# inspire
-INSPIRE: Intensity and Spatial Information-Based Deformable Image Registration
+# INSPIRE: Intensity and Spatial Information-Based Deformable Image Registration
 
 ---
 
