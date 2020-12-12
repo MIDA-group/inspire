@@ -1,0 +1,13 @@
+{
+    "paramSets": [
+        {"optimizer": "sgdm", "samplingFraction": 0.004, "downsamplingFactor": 4, "smoothing": 5.0, "samplingMode": "gw50:1", "distancePower": 1.0, "smoothingMode": "gaussian", "dmax": 0.2, "alphaLevels": 7, "normalization": 0.00025, "gradientMagnitude": false, "lambdaFactor": 0.005, "seed": 2000, "enableCallbacks": true, "verbose": false, "innerParams": [
+            {"iterations": 3000, "controlPoints": 10, "learningRate": 20, "momentum": 0.9}]},
+        {"optimizer": "sgdm", "samplingFraction": 0.004, "downsamplingFactor": 2, "smoothing": 3.0, "samplingMode": "gw50:2", "distancePower": 1.0, "smoothingMode": "gaussian", "dmax": 0.2, "alphaLevels": 7, "normalization": 0.00025, "gradientMagnitude": false, "lambdaFactor": 0.005, "seed": 2001, "enableCallbacks": true, "verbose": false, "innerParams": [
+            {"iterations": 2000, "controlPoints": 24, "learningRate": 12, "momentum": 0.25}]},
+        {"optimizer": "sgdm", "samplingFraction": 0.004, "downsamplingFactor": 2, "smoothing": 1.0, "samplingMode": "gw50:3", "distancePower": 1.0, "smoothingMode": "gaussian", "dmax": 0.1, "alphaLevels": 7, "normalization": 0.00025, "gradientMagnitude": false, "lambdaFactor": 0.005, "seed": 2002, "enableCallbacks": true, "verbose": false, "innerParams": [
+            {"iterations": 1000, "controlPoints": 48, "learningRate": 8, "momentum": 0.25}]},
+        {"optimizer": "sgdm", "samplingFraction": 0.004, "downsamplingFactor": 1, "smoothing": 0, "samplingMode": "gw50:5", "distancePower": 1.0, "smoothingMode": "gaussian", "dmax": 0.1, "alphaLevels": 7, "normalization": 0.00025, "gradientMagnitude": false, "lambdaFactor": 0.005, "seed": 2003, "enableCallbacks": true, "verbose": false, "innerParams": [
+            {"iterations": 250, "controlPoints": 64, "learningRate": 3.0, "momentum": 0.25}, {"iterations": 250, "controlPoints": 80, "learningRate": 3.0, "momentum": 0.25}, {"iterations": 250, "controlPoints": 128, "learningRate": 3.0, "momentum": 0.25}]}
+  ]
+  }
+  

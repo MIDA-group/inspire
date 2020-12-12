@@ -1,0 +1,13 @@
+{
+  "paramSets": [
+      {"optimizer": "sgdm", "samplingFraction": 0.005, "downsamplingFactor": 1, "smoothing": 0.0, "samplingMode": "gw50:2", "histogramEqualization": 255, "distancePower": 1.0, "smoothingMode": "gaussian", "dmax": 0.2, "alphaLevels": 7, "normalization": 0.001, "gradientMagnitude": false, "lambdaFactor": 0.01, "seed": 2000, "enableCallbacks": false, "verbose": false, "innerParams": [
+          {"iterations": 1000, "controlPoints": 9, "learningRate": 3, "momentum": 0.9}, {"iterations": 1000, "controlPoints": 14, "learningRate": 3, "momentum": 0.9}]},
+      {"optimizer": "sgdm", "samplingFraction": 0.005, "downsamplingFactor": 1, "smoothing": 0.0, "samplingMode": "gw50:2", "histogramEqualization": 255, "distancePower": 1.0, "smoothingMode": "gaussian", "dmax": 0.1, "alphaLevels": 7, "normalization": 0.001, "gradientMagnitude": false, "lambdaFactor": 0.01, "seed": 2001, "enableCallbacks": false, "verbose": false, "innerParams": [
+          {"iterations": 1000, "controlPoints": 24, "learningRate": 2, "momentum": 0.3}]},
+      {"optimizer": "sgdm", "samplingFraction": 0.01, "downsamplingFactor": 1, "smoothing": 0.0, "samplingMode": "gw50:2", "histogramEqualization": 255, "distancePower": 1.0, "smoothingMode": "gaussian", "dmax": 0.05, "alphaLevels": 7, "normalization": 0.001, "gradientMagnitude": false, "lambdaFactor": 0.01, "seed": 2002, "enableCallbacks": false, "verbose": false, "innerParams": [
+          {"iterations": 750, "controlPoints": 48, "learningRate": 1, "momentum": 0.3}]},
+      {"optimizer": "sgdm", "samplingFraction": 0.02, "downsamplingFactor": 1, "smoothing": 0, "samplingMode": "gw50:2", "histogramEqualization": 255, "distancePower": 1.0, "smoothingMode": "gaussian", "dmax": 0.025, "alphaLevels": 7, "normalization": 0.001, "gradientMagnitude": false, "lambdaFactor": 0.01, "seed": 2003, "enableCallbacks": false, "verbose": false, "innerParams": [
+          {"iterations": 300, "controlPoints": 64, "learningRate": 1, "momentum": 0.3},
+          {"iterations": 100, "controlPoints": 80, "learningRate": 1, "momentum": 0.3}]}
+]
+}
