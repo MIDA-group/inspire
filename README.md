@@ -1,7 +1,5 @@
 # INSPIRE: Intensity and Spatial Information-Based Deformable Image Registration
 
----
-
 INSPIRE is a deformable image registration method (and tool) for 2D and 3D images.
 Paper reference: Goes Here
 
