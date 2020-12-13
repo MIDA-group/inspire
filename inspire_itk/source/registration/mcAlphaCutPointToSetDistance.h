@@ -189,32 +189,6 @@ inline double InterpolateDistancesWithGrad<3U>(itk::Vector<double, 3U> frac, Val
 
   double value = v_0 * izz + v_1 * zz;
 
-  /*
-   v = v_0 * izz + v_1 * zz
-   =>
-   v = (v_00 * iyy + v_10 * yy) * izz +
-         (v_01 * iyy + v_11 * yy) * zz =
-   ((v_000 * ixx + v_100 * xx) * iyy + (v_010 * ixx + v_110 * xx) * yy) * izz +
-     ((v_001 * ixx + v_101 * xx) * iyy + (v_011 * ixx + v_111 * xx) * yy) * zz =
-
-   df/dx = ((-v_000 + v_100) * iyy + (-v_010 + v_110) * yy) * izz +
-     ((-v_001 + v_101) * iyy + (-v_011 + v_111) * yy) * zz =     
-  ((v_100 - v_000) * iyy + (v_110 - v_010) * yy) * izz + ((v_101 - v_001) * iyy + (v_111 - v_011) * yy) * zz
-
-   df/dy = -(v_000 * ixx + v_100 * xx) * izz + (v_010 * ixx + v_110 * xx) * izz +
-     -(v_001 * ixx + v_101 * xx) * zz + (v_011 * ixx + v_111 * xx) * zz =
-   ((v_010 - v_000) * ixx + (v_110 - v_100) * xx) * izz + ((v_011 - v_001) * ixx + (v_111 - v_101) * xx) * zz
-
-   df/dz = -((v_000 * ixx + v_100 * xx) * iyy + (v_010 * ixx + v_110 * xx) * yy) + 
-     ((v_001 * ixx + v_101 * xx) * iyy + (v_011 * ixx + v_111 * xx) * yy) =
-     ((v_001 - v_000) * ixx + (v_101 - v_100) * xx) * iyy + ((v_011 - v_010) * ixx + (v_111 - v_110) * xx) * yy
-
-  */
-
-  //grad[0] = ((v_100 - v_000) * iyy + (v_110 - v_010) * yy) * izz + ((v_101 - v_001) * iyy + (v_111 - v_011) * yy) * zz;
-  //grad[1] = ((v_010 - v_000) * ixx + (v_110 - v_100) * xx) * izz + ((v_011 - v_001) * ixx + (v_111 - v_101) * xx) * zz;
-  //grad[2] = ((v_001 - v_000) * ixx + (v_101 - v_100) * xx) * iyy + ((v_011 - v_010) * ixx + (v_111 - v_110) * xx) * yy;
-  
   // Compute the scale to apply (initially at 0.25, since if no easing is applied,
   // the gradient should just be the average of four differences).
   double scale = 0.25 * PerformEaseOut(value, easeOutThreshold);
@@ -238,31 +212,32 @@ inline unsigned int PixelCount(itk::Size<ImageDimension> &sz)
   return acc;
 }
 
-template <unsigned int ImageDimension>
-inline unsigned int LargestDimension(itk::Size<ImageDimension> &sz)
+template <unsigned int ImageDimension, typename SpacingType>
+inline unsigned int LargestDimension(itk::Size<ImageDimension> &sz, SpacingType& sp)
 {
   unsigned int res = 0;
-  unsigned int s = sz[0];
+  double s = ((double)sz[0]-1) * sp[0];
   for (unsigned int i = 1U; i < ImageDimension; ++i)
   {
-    if (sz[i] > s)
+    double s_i = ((double)sz[i] - 1) * sp[i];
+    if (s_i > s)
     {
       res = i;
-      s = sz[i];
+      s = s_i;
     }
   }
   return res;
 }
 
 // Computes recursively the exact number of nodes required for a given image.
-template <typename IndexType, typename SizeType, unsigned int ImageDimension>
-unsigned int MaxNodeIndex(IndexType index, SizeType size, unsigned int nodeIndex) {
+template <typename IndexType, typename SizeType, unsigned int ImageDimension, typename SpacingType>
+unsigned int MaxNodeIndex(IndexType index, SizeType size, unsigned int nodeIndex, SpacingType& spacing) {
       if(PixelCount(size) <= 1U) {
         return nodeIndex;
       }
 
       IndexType midIndex = index;
-      unsigned int selIndex = LargestDimension<ImageDimension>(size);
+      unsigned int selIndex = LargestDimension<ImageDimension, SpacingType>(size, spacing);
       unsigned int maxSz = size[selIndex];
 
       midIndex[selIndex] = midIndex[selIndex] + maxSz / 2;
@@ -275,7 +250,7 @@ unsigned int MaxNodeIndex(IndexType index, SizeType size, unsigned int nodeIndex
       unsigned int nodeIndex1 = nodeIndex * 2;
       unsigned int nodeIndex2 = nodeIndex * 2 + 1;
 
-      return MaxNodeIndex<IndexType, SizeType, ImageDimension>(midIndex, sz2, nodeIndex2);
+      return MaxNodeIndex<IndexType, SizeType, ImageDimension, SpacingType>(midIndex, sz2, nodeIndex2, spacing);
 }
 
 template <typename IndexType, typename SizeType, unsigned int ImageDimension, typename SpacingType>
@@ -576,7 +551,11 @@ public:
       }
     }
 
-    unsigned int nodeCount = MCDSInternal::MaxNodeIndex<IndexType, SizeType, ImageDimension>(region.GetIndex(), sz, 1);
+    typedef typename ImageType::SpacingType SpacingType;
+
+    SpacingType spacing = m_Image->GetSpacing();
+
+    unsigned int nodeCount = MCDSInternal::MaxNodeIndex<IndexType, SizeType, ImageDimension>(region.GetIndex(), sz, 1, spacing);
     m_Array = std::move(std::unique_ptr<NodeValueType[]>(new NodeValueType[nodeCount]));
 
     if(MCDSInternal::PixelCount(sz) > 0)
@@ -818,6 +797,10 @@ protected:
     typedef itk::ImageRegionConstIterator<ImageType> IteratorType;
     NodeValueType* data = m_Array.get();
 
+    typedef typename ImageType::SpacingType SpacingType;
+
+    SpacingType spacing = m_Image->GetSpacing();
+
     unsigned int szCount = MCDSInternal::PixelCount<dim>(sz);
 
     if (szCount == 1U)
@@ -840,7 +823,7 @@ protected:
     else
     {
       IndexType midIndex = index;
-      unsigned int selIndex = MCDSInternal::LargestDimension<dim>(sz);
+      unsigned int selIndex = MCDSInternal::LargestDimension<dim>(sz, spacing);
       unsigned int maxSz = sz[selIndex];
 
       midIndex[selIndex] = midIndex[selIndex] + maxSz / 2;
@@ -1045,7 +1028,7 @@ protected:
         }
 
         IndexType midIndex = innerNodeInd;
-        unsigned int selIndex = MCDSInternal::LargestDimension<ImageDimension>(innerNodeSz);
+        unsigned int selIndex = MCDSInternal::LargestDimension<ImageDimension>(innerNodeSz, spacing);
         unsigned int maxSz = innerNodeSz[selIndex];
         unsigned int halfMaxSz = maxSz / 2;
 
