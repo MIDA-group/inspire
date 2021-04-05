@@ -10,6 +10,7 @@ Paper reference/bibtex: arxiv.org/abs/2012.07208
   journal={arXiv preprint arXiv:2012.07208},
   year={2020}
 }
+
 Please cite this paper if you use INSPIRE (and please check back for an updated peer-reviewed reference in the future).
 
 The implementation is based on ITK, a general-purpose library for image processing and analysis, optimisation, registration, segmentation and much more.
