@@ -1,7 +1,14 @@
 # INSPIRE: Intensity and Spatial Information-Based Deformable Image Registration
 
 INSPIRE is a deformable image registration method (and tool) for 2D and 3D images.
-Paper reference: Goes Here
+Paper reference/bibtex: arxiv.org/abs/2012.07208
+@article{ofverstedt2020inspire,
+  title={INSPIRE: Intensity and Spatial Information-Based Deformable Image Registration},
+  author={{\"O}fverstedt, Johan and Lindblad, Joakim and Sladoje, Nata{\v{s}}a},
+  journal={arXiv preprint arXiv:2012.07208},
+  year={2020}
+}
+Please cite this paper if you use INSPIRE (and please check back for an updated peer-reviewed reference in the future).
 
 The implementation is based on ITK, a general-purpose library for image processing and analysis, optimisation, registration, segmentation and much more.
 
